@@ -14,6 +14,6 @@ app.use(express.json());
 import activityRoutes from './routes/activity.routes.js';
 
 // Using routes
-app.use('/activity', activityRoutes);
+app.use('/api/v1/activity', activityRoutes);
 
 export { app };
