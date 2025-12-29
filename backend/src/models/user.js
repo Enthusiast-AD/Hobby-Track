@@ -2,7 +2,7 @@ import mongoose, {Schema} from 'mongoose';
 
 
 const userSchema = new Schema({
-    username: {type: String, required: true, sparse: true}, // sparse allows multiple null values
+    username: {type: String, unique: true, sparse: true}, // sparse allows multiple null values
     email: {type: String, required: true, unique: true},
     fullName: { type: String }, 
     avatar: { type: String },
