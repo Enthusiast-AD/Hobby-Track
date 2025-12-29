@@ -8,7 +8,7 @@ const ContributionGraph = ({userId, refreshKey}) => {
     useEffect(()=>{
         const fetchData = async () => {
             try {
-                const response = await fetch(import.meta.env.VITE_API_URL + `/v1/activity/stats/${userId}/`);
+                const response = await fetch(import.meta.env.VITE_API_URL + `/api/v1/activity/stats/${userId}/`);
                 const result = await response.json();
                 setData(generateYearlyData(result.data));
             } catch (error) {
