@@ -2,13 +2,13 @@ import { useEffect,useState } from "react";
 import { generateYearlyData } from "../utils/dateHelpers.js";
 
 
-const ContributionGraph = ({userId}) => {
+const ContributionGraph = ({userId, refreshKey}) => {
     const [data, setData] = useState([]);
 
     useEffect(()=>{
         const fetchData = async () => {
             try {
-                const response = await fetch(import.meta.env.VITE_API_URL + `/api/v1/activity/stats/${userId}/`);
+                const response = await fetch(import.meta.env.VITE_API_URL + `/v1/activity/stats/${userId}/`);
                 const result = await response.json();
                 setData(generateYearlyData(result.data));
             } catch (error) {
@@ -16,7 +16,7 @@ const ContributionGraph = ({userId}) => {
             }
         }
         fetchData();
-    }, [userId]);
+    }, [userId, refreshKey]);
 
     const colorMap = {
         0: "bg-gray-800",
