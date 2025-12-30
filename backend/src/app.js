@@ -13,9 +13,11 @@ app.use(express.json());
 // Importing routes
 import activityRoutes from './routes/activity.routes.js';
 import authRoutes from './routes/auth.routes.js';
+import habitRoutes from './routes/habit.routes.js';
 
 // Using routes
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/activity', activityRoutes);
+app.use('/api/v1/habits', habitRoutes);
 
 export { app };
