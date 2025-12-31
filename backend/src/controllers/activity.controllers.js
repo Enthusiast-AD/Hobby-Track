@@ -94,6 +94,35 @@ const createActivityLog = asyncHandler(async (req, res) => {
         count: 1
     });
 
+    // Update Streak Logic
+    const now = new Date();
+    const today = new Date(now);
+    today.setHours(0, 0, 0, 0);
+
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    let lastCompleted = habit.lastCompletedDate ? new Date(habit.lastCompletedDate) : null;
+    if (lastCompleted) {
+        lastCompleted.setHours(0, 0, 0, 0);
+    }
+
+    if (lastCompleted && lastCompleted.getTime() === yesterday.getTime()) {
+        habit.currentStreak += 1;
+    } else if (lastCompleted && lastCompleted.getTime() === today.getTime()) {
+        // Already done today, shouldn't happen due to checks above, but keep streak same
+    } else {
+        // Missed a day or first time
+        habit.currentStreak = 1;
+    }
+
+    if (habit.currentStreak > habit.maxStreak) {
+        habit.maxStreak = habit.currentStreak;
+    }
+
+    habit.lastCompletedDate = now;
+    await habit.save();
+
     return res.status(201).json(new ApiResponse(201, newLog, "Activity log created successfully"));
 });
 
