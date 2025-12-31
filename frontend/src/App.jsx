@@ -3,7 +3,9 @@ import { useState, useEffect } from 'react';
 import { Toaster, toast } from 'react-hot-toast'; 
 import Dashboard from './pages/Dashboard';
 import LandingPage from './pages/LandingPage';
+import LoginPage from './pages/LoginPage';
 import PublicProfile from './pages/PublicProfile';
+import Profile from './pages/Profile';
 import Onboarding from './pages/Onboarding'; 
 import { jwtDecode } from "jwt-decode"; 
 
@@ -47,14 +49,16 @@ function App() {
   if (loading) return <div className="bg-black min-h-screen text-white flex items-center justify-center">Loading...</div>;
 
   return (
-    <div className="min-h-screen bg-black text-white p-6 flex justify-center">
+    <div className="min-h-screen bg-black text-white">
        <Toaster position="bottom-center" />
        
        <BrowserRouter>
           <Routes>
-             <Route path="/" element={
+             <Route path="/" element={<LandingPage />} />
+             
+             <Route path="/login" element={
                  !user ? (
-                    <LandingPage onLoginSuccess={(data) => {
+                    <LoginPage onLoginSuccess={(data) => {
                         localStorage.setItem('token', data.token);
                         localStorage.setItem('user', JSON.stringify(data.user));
                         setUser(data.user);
@@ -64,22 +68,33 @@ function App() {
                     <Navigate to={user.username ? "/dashboard" : "/onboarding"} />
                  )
              } />
+
              <Route path="/onboarding" element={
                  user && !user.username ? (
                     <Onboarding onComplete={(updatedUser) => {
                         setUser(updatedUser);
                     }} />
                  ) : (
-                    <Navigate to={user ? "/dashboard" : "/"} />
+                    <Navigate to={user ? "/dashboard" : "/login"} />
                  )
              } />
+
              <Route path="/dashboard" element={
                  user && user.username ? (
                     <Dashboard user={user} logout={handleLogout} />
                  ) : (
-                    user ? <Navigate to="/onboarding" /> : <Navigate to="/" />
+                    user ? <Navigate to="/onboarding" /> : <Navigate to="/login" />
                  )
              } />
+
+             <Route path="/profile" element={
+                 user && user.username ? (
+                    <Profile user={user} />
+                 ) : (
+                    <Navigate to="/login" />
+                 )
+             } />
+
              <Route path="/u/:username" element={<PublicProfile />} />
           </Routes>
        </BrowserRouter>

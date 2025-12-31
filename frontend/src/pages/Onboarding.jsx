@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { Rocket } from 'lucide-react';
 
 const Onboarding = ({ onComplete }) => {
     const [username, setUsername] = useState("");
@@ -60,9 +61,9 @@ const Onboarding = ({ onComplete }) => {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-lg transition-all disabled:opacity-50"
+                        className="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                     >
-                        {loading ? "Checking..." : "Let's Go 🚀"}
+                        {loading ? "Checking..." : <>Let's Go <Rocket size={20} /></>}
                     </button>
                 </form>
             </div>
