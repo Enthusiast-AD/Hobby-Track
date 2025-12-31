@@ -5,14 +5,19 @@ import { generateYearlyData } from "../utils/dateHelpers.js";
 const ContributionGraph = ({userId, refreshKey}) => {
     const [data, setData] = useState([]);
 
-    useEffect(()=>{
+    useEffect(() => {
+        if (!userId) return; 
+
         const fetchData = async () => {
             try {
-                const response = await fetch(import.meta.env.VITE_API_URL + `/api/v1/activity/stats/${userId}/`);
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/activity/stats/${userId}`);
+                
+                if (!response.ok) return;
+
                 const result = await response.json();
                 setData(generateYearlyData(result.data));
             } catch (error) {
-                console.error("Error fetching contribution data:", error);
+                console.error("Error fetching graph:", error);
             }
         }
         fetchData();
@@ -34,7 +39,7 @@ const ContributionGraph = ({userId, refreshKey}) => {
                     {data.map((day, index) => (
                         <div 
                             key={index}
-                            title={`${day.date}: ${day.count} tasks`} // Simple tooltip
+                            title={`${day.date}: ${day.count} tasks`}
                             className={`w-3 h-3 rounded-sm ${colorMap[day.level]}`}
                         >
                         </div>
