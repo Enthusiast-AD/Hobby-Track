@@ -4,6 +4,7 @@ import { ApiResponse } from "../utils/ApiResponse.js"
 import {ApiError} from "../utils/ApiError.js"
 import mongoose from "mongoose"; 
 import { isValidObjectId } from "mongoose";
+import {Habit} from "../models/habit.js";
 
 const getUserStats = asyncHandler(async (req, res) => {
     const userId = req.params.userId;
@@ -45,8 +46,45 @@ const getUserStats = asyncHandler(async (req, res) => {
 const createActivityLog = asyncHandler(async (req, res) => {
     const { userId, habitId } = req.body;
     
-    if(!isValidObjectId(userId)){
-        throw new ApiError(400, "Invalid user ID");
+    if(!isValidObjectId(userId) || !isValidObjectId(habitId)) {
+        throw new ApiError(400, "Invalid user ID or habit ID");
+    }
+
+    const habit = await Habit.findById(habitId);
+    if (!habit) {
+        throw new ApiError(404, "Habit not found");
+    }
+
+    if (habit.isArchived) {
+        throw new ApiError(400, "Cannot log activity for an archived habit");
+    }
+
+
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 59, 999);
+
+    if (habit.type === 'daily') {
+        const existingLog = await ActivityLog.findOne({
+            userId,
+            habitId,
+            date: { $gte: todayStart, $lte: todayEnd }
+        });
+
+        if (existingLog) {
+            throw new ApiError(400, "You have already completed this daily habit today!");
+        }
+    } else if (habit.type === 'todo') {
+        const existingLog = await ActivityLog.findOne({
+            userId,
+            habitId
+        });
+
+        if (existingLog) {
+            throw new ApiError(400, "This To-Do is already completed!");
+        }
     }
 
     const newLog  = await ActivityLog.create({
