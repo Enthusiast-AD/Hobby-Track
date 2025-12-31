@@ -3,6 +3,7 @@ import { toast } from 'react-hot-toast';
 
 const HabitForm = ({ onHabitCreated }) => {
     const [title, setTitle] = useState("");
+    const [type, setType] = useState("daily"); 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,13 +18,17 @@ const HabitForm = ({ onHabitCreated }) => {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ title, description: "Daily Goal" })
+                body: JSON.stringify({ 
+                    title, 
+                    type,
+                    description: type === 'daily' ? "Repeat every day" : "One-time task"
+                })
             });
 
             if (response.ok) {
                 toast.success("New habit unlocked! 🚀");
                 setTitle("");
-                
+                setType("daily"); 
                 onHabitCreated(); 
             } else {
                 toast.error("Could not create habit");
@@ -34,20 +39,32 @@ const HabitForm = ({ onHabitCreated }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="flex gap-2 w-full max-w-md mb-8">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-md mb-8">
             <input 
                 type="text" 
                 placeholder="Enter a new habit (e.g. Read 5 pages)"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-green-500 transition-colors"
+                className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-green-500 transition-colors"
             />
-            <button 
-                type="submit"
-                className="bg-green-600 hover:bg-green-500 text-white font-bold px-6 py-2 rounded-lg transition-all"
-            >
-                Add
-            </button>
+            
+            <div className="flex gap-4">
+                <select 
+                    value={type} 
+                    onChange={(e) => setType(e.target.value)}
+                    className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none"
+                >
+                    <option value="daily">🔄 Daily</option>
+                    <option value="todo">✅ To-Do (Once)</option>
+                </select>
+
+                <button 
+                    type="submit"
+                    className="flex-1 bg-green-600 hover:bg-green-500 text-white font-bold px-6 py-2 rounded-lg transition-all"
+                >
+                    Add Habit
+                </button>
+            </div>
         </form>
     );
 };
