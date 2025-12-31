@@ -27,4 +27,20 @@ const getHabits = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200,habits, 'Habits retrieved successfully',));
 })
 
-export {createHabit, getHabits};
+const toggleArchiveHabit = asyncHandler(async(req,res) => {
+    const {habitId} = req.params;
+    const userId = req.user._id;
+
+    const habit = await Habit.findOne({ _id: habitId, userId });
+
+    if(!habit) {
+        throw new ApiError(404, 'Habit not found');
+    }
+    
+    habit.isArchived = !habit.isArchived;
+    await habit.save();
+
+    return res.status(200).json(new ApiResponse(200,habit, habit.isArchived ? 'Habit archived successfully' : 'Habit unarchived successfully'));
+})
+
+export {createHabit, getHabits, toggleArchiveHabit};
