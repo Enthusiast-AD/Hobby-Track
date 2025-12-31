@@ -2,6 +2,7 @@ import {asyncHandler} from '../utils/asyncHandler.js';
 import {ApiError} from '../utils/ApiError.js';
 import {ApiResponse} from '../utils/ApiResponse.js';
 import { Habit } from '../models/habit.js';
+import { ActivityLog } from '../models/activityLog.js';
 
 const createHabit = asyncHandler(async (req, res) => {
     const {title, description, type} = req.body;
@@ -24,7 +25,37 @@ const createHabit = asyncHandler(async (req, res) => {
 const getHabits = asyncHandler(async (req, res) => {
     const userId = req.user._id;
     const habits = await Habit.find({userId, isArchived: false}).sort({createdAt: -1});
-    return res.status(200).json(new ApiResponse(200,habits, 'Habits retrieved successfully',));
+
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 59, 999);
+
+    const habitsWithStatus = await Promise.all(habits.map(async (habit) => {
+        let isCompleted = false;
+
+        if (habit.type === 'daily') {
+            const log = await ActivityLog.findOne({
+                userId,
+                habitId: habit._id,
+                date: { $gte: todayStart, $lte: todayEnd }
+            });
+            isCompleted = !!log;
+        } else if (habit.type === 'todo') {
+            const log = await ActivityLog.findOne({
+                userId,
+                habitId: habit._id
+            });
+            isCompleted = !!log;
+        }
+
+        return {
+            ...habit.toObject(),
+            completedToday: isCompleted
+        };
+    }));
+
+    return res.status(200).json(new ApiResponse(200, habitsWithStatus, 'Habits retrieved successfully'));
 })
 
 const toggleArchiveHabit = asyncHandler(async(req,res) => {
