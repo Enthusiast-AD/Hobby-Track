@@ -1,18 +1,23 @@
 import { Link } from 'react-router-dom';
-import { BarChart2, Target, Globe, Rocket, Sparkles } from 'lucide-react';
+import { BarChart2, Target, Globe, Rocket, Sparkles, CheckCircle2 } from 'lucide-react';
 
 const LandingPage = () => {
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-green-500/30">
       {/* Navbar */}
-      <nav className="fixed top-0 w-full z-50 border-b border-gray-800 bg-black/80 backdrop-blur-md">
+      <nav className="fixed top-0 w-full z-50 border-b border-white/10 bg-black/50 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">
-            HobbyTrack
-          </h1>
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
+                <CheckCircle2 size={20} className="text-black" />
+            </div>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                Commit
+            </h1>
+          </div>
           <Link 
             to="/login" 
-            className="bg-white text-black px-6 py-2 rounded-full font-semibold hover:bg-gray-200 transition-colors"
+            className="bg-white text-black px-6 py-2 rounded-full font-semibold hover:bg-gray-200 transition-colors text-sm"
           >
             Login
           </Link>
@@ -20,52 +25,55 @@ const LandingPage = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6 relative overflow-hidden">
+      <section className="pt-40 pb-20 px-6 relative overflow-hidden">
+        {/* Grid Background */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+
         <div className="max-w-5xl mx-auto text-center space-y-8 relative z-10">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-green-500/30 bg-green-500/10 text-green-400 text-sm font-medium mb-4 animate-fade-in">
-            <Sparkles size={16} /> The best way to track your habits
+            <Sparkles size={14} /> The best way to track your habits
           </div>
           
-          <h1 className="text-6xl md:text-8xl font-bold tracking-tighter leading-tight animate-fade-in-up">
-            Master your <br/>
-            <span className="bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">Consistency.</span>
+          <h1 className="text-6xl md:text-8xl font-bold tracking-tighter leading-tight">
+            Push changes to <br/>
+            <span className="bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">your real life.</span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed animate-fade-in-up delay-100">
+          <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
             Visualize your daily progress with GitHub-style contribution graphs. 
             Build habits that stick and share your journey.
           </p>
 
-          <div className="pt-8 animate-fade-in-up delay-200">
+          <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link 
               to="/login" 
-              className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-500 text-white text-lg font-bold px-8 py-4 rounded-full transition-all transform hover:scale-105 shadow-lg shadow-green-900/20"
+              className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-500 text-white text-lg font-bold px-8 py-4 rounded-full transition-all transform hover:scale-105 shadow-[0_0_40px_-10px_rgba(22,163,74,0.5)]"
             >
               Get Started for Free <Rocket size={20} />
             </Link>
           </div>
         </div>
 
-        {/* Background Gradients */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-green-500/10 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
+        {/* Ambient Light */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-green-500/10 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
       </section>
 
       {/* Features Grid */}
-      <section className="py-20 bg-gray-900/30 border-t border-gray-800">
+      <section className="py-24 bg-black border-t border-white/10">
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <FeatureCard 
-              icon={<BarChart2 size={32} />} 
+              icon={<BarChart2 size={28} />} 
               title="Visual Progress" 
               desc="See your hard work pay off with beautiful contribution graphs that motivate you to keep going."
             />
             <FeatureCard 
-              icon={<Target size={32} />} 
+              icon={<Target size={28} />} 
               title="Goal Tracking" 
               desc="Set daily or one-time goals. Track everything from reading to coding to working out."
             />
             <FeatureCard 
-              icon={<Globe size={32} />} 
+              icon={<Globe size={28} />} 
               title="Public Profile" 
               desc="Share your profile with friends or on social media. Let your consistency speak for itself."
             />
@@ -74,7 +82,7 @@ const LandingPage = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 border-t border-gray-800 text-center text-gray-500 text-sm">
+      <footer className="py-12 border-t border-white/10 text-center text-gray-600 text-sm bg-black">
         <p>© {new Date().getFullYear()} HobbyTrack. All rights reserved.</p>
       </footer>
     </div>
@@ -82,12 +90,12 @@ const LandingPage = () => {
 };
 
 const FeatureCard = ({ icon, title, desc }) => (
-  <div className="bg-gray-900/50 border border-gray-800 p-8 rounded-3xl hover:border-green-500/30 transition-all duration-300 group hover:-translate-y-2 hover:shadow-2xl hover:shadow-green-900/10">
-    <div className="mb-6 bg-gradient-to-br from-gray-800 to-gray-900 w-20 h-20 flex items-center justify-center rounded-2xl group-hover:scale-110 transition-transform text-green-400 border border-gray-700 shadow-lg">
+  <div className="bg-white/5 border border-white/10 p-8 rounded-3xl hover:border-green-500/50 transition-all duration-300 group hover:-translate-y-2 hover:bg-white/[0.07]">
+    <div className="mb-6 bg-gradient-to-br from-gray-800 to-black w-16 h-16 flex items-center justify-center rounded-2xl group-hover:scale-110 transition-transform text-green-400 border border-white/10 shadow-lg">
       {icon}
     </div>
-    <h3 className="text-2xl font-bold text-white mb-4">{title}</h3>
-    <p className="text-gray-400 leading-relaxed text-lg">{desc}</p>
+    <h3 className="text-xl font-bold text-white mb-3">{title}</h3>
+    <p className="text-gray-400 leading-relaxed">{desc}</p>
   </div>
 );
 

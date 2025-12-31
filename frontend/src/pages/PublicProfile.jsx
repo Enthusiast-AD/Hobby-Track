@@ -34,7 +34,7 @@ const PublicProfile = () => {
              <nav className="sticky top-0 z-50 border-b border-gray-800 bg-black/80 backdrop-blur-md">
                 <div className="max-w-5xl mx-auto px-4 h-16 flex justify-between items-center">
                     <Link to="/" className="text-xl font-bold bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">
-                        HobbyTrack
+                        Commit
                     </Link>
                     <Link to="/login" className="text-sm bg-white text-black px-4 py-2 rounded-full font-bold hover:bg-gray-200 transition-colors">
                         Join Now
