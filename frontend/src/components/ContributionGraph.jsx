@@ -102,47 +102,6 @@ const ContributionGraph = ({userId, refreshKey}) => {
     };
 
     return (
-        <div ref={scrollRef} className="overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
-            <div className="grid grid-rows-7 grid-flow-col gap-1 w-max">
-                {data.map((day, index) => (
-                    <div 
-                        key={index}
-                        title={`${day.date}: ${day.count} tasks`}
-                        className={`w-3 h-3 rounded-sm transition-all hover:scale-125 hover:z-10 ${colorMap[day.level]}`}
-                    >
-        <div className="space-y-4">
-            {/* Stats Header */}
-            <div className="flex gap-6 mb-4">
-                <div className="flex items-center gap-2 text-gray-300 bg-gray-900/50 px-4 py-2 rounded-xl border border-gray-800">
-                    <Flame className="text-orange-500" size={20} />
-                    <div>
-                        <p className="text-xs text-gray-500 uppercase font-bold">Current Streak</p>
-                        <p className="text-xl font-bold text-white">{streaks.current} <span className="text-sm font-normal text-gray-500">days</span></p>
-                    </div>
-                </div>
-                <div className="flex items-center gap-2 text-gray-300 bg-gray-900/50 px-4 py-2 rounded-xl border border-gray-800">
-                    <Trophy className="text-yellow-500" size={20} />
-                    <div>
-                        <p className="text-xs text-gray-500 uppercase font-bold">Longest Streak</p>
-                        <p className="text-xl font-bold text-white">{streaks.max} <span className="text-sm font-normal text-gray-500">days</span></p>
-                    </div>
-                </div>
-            </div>
-
-            {/* Graph */}
-            <div ref={scrollRef} className="overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
-                <div className="grid grid-rows-7 grid-flow-col gap-1 w-max">
-                    {data.map((day, index) => (
-                        <div 
-                            key={index}
-                            onClick={() => handleDateClick(day.date, day.count)}
-                            title={`${day.date}: ${day.count === 0 ? "No activity" : `${day.count} tasks completed`}`}
-                            className={`w-3 h-3 rounded-sm transition-all hover:scale-125 hover:z-10 cursor-pointer ${colorMap[day.level]} ${selectedDate === day.date ? 'ring-2 ring-white' : ''}`}
-                        >
-                        </div>
-                    ))}
-                </div>
-            </div>
         <div className="space-y-6">
             {/* Stats Header */}
             <div className="flex flex-wrap gap-4 mb-6">
