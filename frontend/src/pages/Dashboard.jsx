@@ -10,6 +10,7 @@ const Dashboard = ({ user, logout }) => {
     const [habits, setHabits] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('active'); // 'active' | 'archived'
+    const [exitingHabits, setExitingHabits] = useState(new Set());
     
     // Modal State for "Create Habit"
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -84,7 +85,17 @@ const Dashboard = ({ user, logout }) => {
 
             if (response.ok) {
                 toast.success(activeTab === 'active' ? "Habit archived" : "Habit unarchived");
-                fetchHabits();
+                
+                // Animate and remove from list
+                setExitingHabits(prev => new Set(prev).add(selectedHabitId));
+                setTimeout(() => {
+                    setHabits(prev => prev.filter(h => h._id !== selectedHabitId));
+                    setExitingHabits(prev => {
+                        const next = new Set(prev);
+                        next.delete(selectedHabitId);
+                        return next;
+                    });
+                }, 300);
             } else {
                 toast.error("Failed to update habit");
             }
@@ -105,7 +116,17 @@ const Dashboard = ({ user, logout }) => {
 
             if (response.ok) {
                 toast.success("Habit deleted permanently");
-                fetchHabits();
+                
+                // Animate and remove from list
+                setExitingHabits(prev => new Set(prev).add(selectedHabitId));
+                setTimeout(() => {
+                    setHabits(prev => prev.filter(h => h._id !== selectedHabitId));
+                    setExitingHabits(prev => {
+                        const next = new Set(prev);
+                        next.delete(selectedHabitId);
+                        return next;
+                    });
+                }, 300);
             } else {
                 toast.error("Failed to delete habit");
             }
@@ -141,7 +162,19 @@ const Dashboard = ({ user, logout }) => {
 
             if (response.ok) {
                 toast.success("Done! 🔥");
-                fetchHabits(); 
+                
+                // Optimistic update
+                setHabits(prev => prev.map(h => {
+                    if (h._id === habitId) {
+                        return {
+                            ...h,
+                            completedToday: true,
+                            currentStreak: (h.currentStreak || 0) + 1,
+                            maxStreak: Math.max((h.maxStreak || 0), (h.currentStreak || 0) + 1)
+                        };
+                    }
+                    return h;
+                }));
                 setRefreshKey(prev => prev + 1);
             } else {
                 toast.error(data.message || "Could not log activity");
@@ -251,8 +284,9 @@ const Dashboard = ({ user, logout }) => {
                         ))
                     ) : habits.map((habit) => {
                         const isDone = habit.completedToday;
+                        const isExiting = exitingHabits.has(habit._id);
                         return (
-                            <div key={habit._id} className={`group bg-[#0a0a0a] border p-6 rounded-3xl transition-all duration-300 relative hover:-translate-y-1 hover:shadow-2xl ${isDone ? 'border-green-500/30 bg-green-900/5 shadow-green-900/10' : 'border-gray-800 hover:border-gray-700'}`}>
+                            <div key={habit._id} className={`group bg-[#0a0a0a] border p-6 rounded-3xl transition-all duration-300 relative hover:-translate-y-1 hover:shadow-2xl ${isDone ? 'border-green-500/30 bg-green-900/5 shadow-green-900/10' : 'border-gray-800 hover:border-gray-700'} ${isExiting ? 'opacity-0 scale-90' : 'opacity-100 scale-100 animate-in fade-in slide-in-from-bottom-4 duration-500'}`}>
                                 <div className="flex justify-between items-start mb-6">
                                     <div className="pr-8 w-full">
                                         <h3 className={`font-bold text-xl mb-3 ${isDone ? 'text-green-400 line-through decoration-green-500/50' : 'text-white'}`}>{habit.title}</h3>
@@ -354,8 +388,12 @@ const Dashboard = ({ user, logout }) => {
                         
                         {/* Wrapper for HabitForm */}
                         <div className="max-h-[70vh] overflow-y-auto custom-scrollbar">
-                            <HabitForm onHabitCreated={() => { 
-                                fetchHabits(); 
+                            <HabitForm onHabitCreated={(newHabit) => { 
+                                if (newHabit) {
+                                    setHabits(prev => [newHabit, ...prev]);
+                                } else {
+                                    fetchHabits(); // Fallback
+                                }
                                 setIsCreateModalOpen(false); 
                             }} />
                         </div>

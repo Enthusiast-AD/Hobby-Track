@@ -26,11 +26,13 @@ const HabitForm = ({ onHabitCreated }) => {
                 })
             });
 
+            const data = await response.json();
+
             if (response.ok) {
                 toast.success("New habit unlocked! 🚀");
                 setTitle("");
                 setType("daily"); 
-                onHabitCreated(); 
+                onHabitCreated(data.data); 
             } else {
                 toast.error("Could not create habit");
             }
