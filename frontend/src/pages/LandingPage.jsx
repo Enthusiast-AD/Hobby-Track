@@ -8,10 +8,7 @@ const LandingPage = () => {
       <nav className="fixed top-0 w-full z-50 border-b border-white/10 bg-black/50 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
-                <CheckCircle2 size={20} className="text-black" />
-            </div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">
                 Commit
             </h1>
           </div>
@@ -52,6 +49,45 @@ const LandingPage = () => {
               Get Started for Free <Rocket size={20} />
             </Link>
           </div>
+        </div>
+
+        {/* Dashboard Preview */}
+        <div className="max-w-5xl mx-auto px-4 mt-24 relative z-20 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200 space-y-24">
+            
+            {/* Dashboard Image */}
+            <div className="space-y-8 text-center">
+                <div className="space-y-4 max-w-2xl mx-auto">
+                    <h2 className="text-3xl md:text-4xl font-bold text-white">Your Personal Command Center</h2>
+                    <p className="text-gray-400 text-lg leading-relaxed">
+                        Track your daily habits, monitor your streaks, and stay focused with a clean, distraction-free dashboard designed for peak performance.
+                    </p>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-gray-900/50 p-2 backdrop-blur-xl shadow-2xl shadow-green-500/10 transform hover:scale-[1.01] transition-transform duration-500">
+                     <img 
+                        src="/dashboard-preview.png" 
+                        alt="App Dashboard" 
+                        className="w-full rounded-xl border border-white/5 shadow-2xl"
+                    />
+                </div>
+            </div>
+
+            {/* Profile Image */}
+            <div className="space-y-8 text-center">
+                <div className="space-y-4 max-w-2xl mx-auto">
+                    <h2 className="text-3xl md:text-4xl font-bold text-white">Share Your Journey</h2>
+                    <p className="text-gray-400 text-lg leading-relaxed">
+                        Showcase your consistency with a beautiful public profile. Let your contribution graph tell the story of your dedication.
+                    </p>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-gray-900/50 p-2 backdrop-blur-xl shadow-2xl shadow-blue-500/10 transform hover:scale-[1.01] transition-transform duration-500">
+                     <img 
+                        src="/profile-preview.png" 
+                        alt="Public Profile" 
+                        className="w-full rounded-xl border border-white/5 shadow-2xl"
+                    />
+                </div>
+            </div>
+
         </div>
 
         {/* Ambient Light */}
