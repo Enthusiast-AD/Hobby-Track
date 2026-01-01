@@ -19,20 +19,20 @@ const Profile = ({ user }) => {
                     </Link>
                     <Link 
                         to="/dashboard" 
-                        className="px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-all border border-white/5 flex items-center gap-2"
+                        className="px-3 py-2 md:px-4 md:py-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-all border border-white/5 flex items-center gap-2"
                     >
-                        <ArrowLeft size={16} /> Back to Dashboard
+                        <ArrowLeft size={16} /> <span className="hidden sm:inline">Back to Dashboard</span><span className="sm:hidden">Back</span>
                     </Link>
                 </div>
             </nav>
 
-            <main className="max-w-4xl mx-auto px-4 py-12">
-                <div className="flex flex-col md:flex-row items-center gap-8 mb-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <main className="max-w-4xl mx-auto px-4 py-8 md:py-12">
+                <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8 mb-8 md:mb-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
                     <div className="relative group">
                         <img 
                             src={user.avatar} 
                             alt="Profile" 
-                            className="relative w-32 h-32 rounded-full border-4 border-gray-800 object-cover shadow-2xl" 
+                            className="relative w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-gray-800 object-cover shadow-2xl" 
                         />
                     </div>
                     
@@ -67,12 +67,12 @@ const Profile = ({ user }) => {
                     </div>
                 </div>
 
-                <div className="bg-[#0A0A0A] border border-white/10 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+                <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl md:rounded-3xl p-4 md:p-8 shadow-2xl relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-green-500/5 rounded-full blur-3xl -z-10 pointer-events-none"></div>
                     
-                    <h2 className="text-2xl font-bold mb-8 text-white flex items-center gap-3">
+                    <h2 className="text-xl md:text-2xl font-bold mb-6 md:mb-8 text-white flex items-center gap-3">
                         <div className="p-2 bg-green-500/10 rounded-lg border border-green-500/20">
-                            <Activity size={24} className="text-green-500" />
+                            <Activity size={20} className="text-green-500 md:w-6 md:h-6" />
                         </div>
                         Consistency Graph
                     </h2>
