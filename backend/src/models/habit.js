@@ -6,6 +6,9 @@ const habitSchema = new Schema({
     description: {type: String, default: ''},
     type: {type: String, enum: ['daily', 'todo'], default: 'daily'},
     isArchived: {type: Boolean, default: false},
+    currentStreak: {type: Number, default: 0},
+    maxStreak: {type: Number, default: 0},
+    lastCompletedDate: {type: Date, default: null}
 }, {timestamps: true});
 
 export const Habit = mongoose.model('Habit', habitSchema);
