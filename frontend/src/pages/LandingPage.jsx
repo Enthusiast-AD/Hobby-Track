@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { BarChart2, Target, Globe, Rocket, Sparkles, CheckCircle2 } from 'lucide-react';
+import { BarChart2, Target, Globe, Rocket, Sparkles } from 'lucide-react';
 
 const LandingPage = () => {
   return (
@@ -95,25 +95,89 @@ const LandingPage = () => {
       </section>
 
       {/* Features Grid */}
-      <section className="py-24 bg-black border-t border-white/10">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <FeatureCard 
-              icon={<BarChart2 size={28} />} 
-              title="Visual Progress" 
-              desc="See your hard work pay off with beautiful contribution graphs that motivate you to keep going."
-            />
-            <FeatureCard 
-              icon={<Target size={28} />} 
-              title="Goal Tracking" 
-              desc="Set daily or one-time goals. Track everything from reading to coding to working out."
-            />
-            <FeatureCard 
-              icon={<Globe size={28} />} 
-              title="Public Profile" 
-              desc="Share your profile with friends or on social media. Let your consistency speak for itself."
-            />
-          </div>
+      <section className="py-32 bg-black relative overflow-hidden border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+            
+            <div className="text-center max-w-3xl mx-auto mb-20">
+                <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                    Everything you need to stay consistent.
+                </h2>
+                <p className="text-xl text-gray-400">
+                    Powerful features designed to help you build habits that last a lifetime.
+                </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Large Card 1 */}
+                <div className="md:col-span-2 bg-gray-900/50 border border-white/10 rounded-3xl p-8 md:p-12 relative overflow-hidden group hover:border-green-500/30 transition-all duration-500 hover:bg-gray-900/80">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-green-500/10 rounded-full blur-3xl -mr-32 -mt-32 transition-opacity opacity-50 group-hover:opacity-100"></div>
+                    
+                    <div className="relative z-10">
+                        <div className="w-14 h-14 bg-green-500/10 rounded-2xl flex items-center justify-center mb-8 text-green-400 border border-green-500/20">
+                            <BarChart2 size={28} />
+                        </div>
+                        <h3 className="text-3xl font-bold text-white mb-4">GitHub-style Contribution Graph</h3>
+                        <p className="text-gray-400 text-lg leading-relaxed max-w-md">
+                            Visualize your consistency with our signature heat map. Every green square is a victory, motivating you to never break the chain.
+                        </p>
+                    </div>
+                </div>
+
+                {/* Tall Card 2 */}
+                <div className="bg-gray-900/50 border border-white/10 rounded-3xl p-8 relative overflow-hidden group hover:border-blue-500/30 transition-all duration-500 hover:bg-gray-900/80">
+                    <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-blue-500/10 to-transparent opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                    
+                    <div className="relative z-10 h-full flex flex-col">
+                        <div className="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-8 text-blue-400 border border-blue-500/20">
+                            <Globe size={28} />
+                        </div>
+                        <h3 className="text-2xl font-bold text-white mb-4">Public Profile</h3>
+                        <p className="text-gray-400 leading-relaxed mb-8 flex-grow">
+                            Share your journey with the world. Your public profile showcases your streaks and dedication.
+                        </p>
+                    </div>
+                </div>
+
+                {/* Card 3 */}
+                <div className="bg-gray-900/50 border border-white/10 rounded-3xl p-8 relative overflow-hidden group hover:border-purple-500/30 transition-all duration-500 hover:bg-gray-900/80">
+                     <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl -mr-10 -mt-10 transition-opacity opacity-50 group-hover:opacity-100"></div>
+                    <div className="relative z-10">
+                        <div className="w-14 h-14 bg-purple-500/10 rounded-2xl flex items-center justify-center mb-8 text-purple-400 border border-purple-500/20">
+                            <Target size={28} />
+                        </div>
+                        <h3 className="text-2xl font-bold text-white mb-4">Flexible Goals</h3>
+                        <p className="text-gray-400 leading-relaxed">
+                            Track daily habits or one-off tasks. Whether it's "Read 30 mins" or "Run a Marathon", we've got you covered.
+                        </p>
+                    </div>
+                </div>
+
+                {/* Card 4 */}
+                <div className="md:col-span-2 bg-gray-900/50 border border-white/10 rounded-3xl p-8 relative overflow-hidden group hover:border-orange-500/30 transition-all duration-500 hover:bg-gray-900/80 flex flex-col md:flex-row items-center gap-8">
+                    <div className="flex-1 relative z-10">
+                        <div className="w-14 h-14 bg-orange-500/10 rounded-2xl flex items-center justify-center mb-8 text-orange-400 border border-orange-500/20">
+                            <Sparkles size={28} />
+                        </div>
+                        <h3 className="text-3xl font-bold text-white mb-4">Gamified Streaks</h3>
+                        <p className="text-gray-400 text-lg leading-relaxed">
+                            Earn streaks for consecutive days. Watch your fire grow and challenge yourself to beat your personal best.
+                        </p>
+                    </div>
+                    {/* Decorative Element */}
+                    <div className="flex-1 flex justify-center items-center opacity-90">
+                         <div className="flex gap-6">
+                            <div className="bg-black/40 p-5 rounded-2xl border border-white/10 backdrop-blur-md transform -rotate-6 shadow-2xl">
+                                <div className="text-orange-500 font-bold text-2xl mb-1">🔥 12 Days</div>
+                                <div className="text-xs text-gray-500 font-mono uppercase tracking-wider">Current Streak</div>
+                            </div>
+                            <div className="bg-black/40 p-5 rounded-2xl border border-white/10 backdrop-blur-md transform rotate-6 mt-12 shadow-2xl">
+                                <div className="text-yellow-500 font-bold text-2xl mb-1">🏆 45 Days</div>
+                                <div className="text-xs text-gray-500 font-mono uppercase tracking-wider">Best Streak</div>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+            </div>
         </div>
       </section>
 
@@ -124,15 +188,5 @@ const LandingPage = () => {
     </div>
   );
 };
-
-const FeatureCard = ({ icon, title, desc }) => (
-  <div className="bg-white/5 border border-white/10 p-8 rounded-3xl hover:border-green-500/50 transition-all duration-300 group hover:-translate-y-2 hover:bg-white/[0.07]">
-    <div className="mb-6 bg-gradient-to-br from-gray-800 to-black w-16 h-16 flex items-center justify-center rounded-2xl group-hover:scale-110 transition-transform text-green-400 border border-white/10 shadow-lg">
-      {icon}
-    </div>
-    <h3 className="text-xl font-bold text-white mb-3">{title}</h3>
-    <p className="text-gray-400 leading-relaxed">{desc}</p>
-  </div>
-);
 
 export default LandingPage;
