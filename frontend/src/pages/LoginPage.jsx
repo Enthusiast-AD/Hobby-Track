@@ -41,15 +41,15 @@ const LoginPage = ({ onLoginSuccess }) => {
       </div>
 
       {/* Right Side - Feature Showcase */}
-      <div className="hidden md:flex w-1/2 bg-gray-900 relative flex-col justify-center p-16 overflow-hidden border-l border-white/5">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gray-800 via-black to-black opacity-80"></div>
+      <div className="hidden md:flex w-1/2 bg-gradient-to-br from-gray-900 via-black to-gray-900 relative flex-col justify-center p-16 overflow-hidden border-l border-white/5">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-green-900/20 via-black to-black opacity-50"></div>
         
         {/* Grid Pattern */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:32px_32px] opacity-20"></div>
 
         <div className="relative z-10 space-y-12 max-w-lg mx-auto">
             <div className="space-y-4">
-                <h2 className="text-4xl font-bold text-white">Why HobbyTrack?</h2>
+                <h2 className="text-4xl font-bold text-white">Why Commit?</h2>
                 <p className="text-gray-400 text-lg">Everything you need to stay consistent and motivated in one place.</p>
             </div>
 
