@@ -1,20 +1,24 @@
 import { useState, useEffect, useRef } from 'react';
 import { toast } from 'react-hot-toast';
 import { Link } from 'react-router-dom';
-import { LogOut, User, Plus, Check, Trash2, X, Flame, Trophy } from 'lucide-react';
+import { LogOut, User, Plus, Check, Trash2, X, Flame, Trophy, Archive, RotateCcw } from 'lucide-react';
 import HabitForm from '../components/HabitForm';
 import ConfirmModal from '../components/ConfirmModal';
+import Skeleton from '../components/Skeleton';
 
 const Dashboard = ({ user, logout }) => {
     const [habits, setHabits] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [activeTab, setActiveTab] = useState('active'); // 'active' | 'archived'
     
     // Modal State for "Create Habit"
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     
     const [refreshKey, setRefreshKey] = useState(0);
 
-    // Archive Modal State
+    // Archive/Delete Modal State
     const [isArchiveModalOpen, setIsArchiveModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [selectedHabitId, setSelectedHabitId] = useState(null);
     
     // Profile Dropdown State
@@ -31,12 +35,14 @@ const Dashboard = ({ user, logout }) => {
         };
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
+    }, [activeTab]); // Refetch when tab changes
 
     const fetchHabits = async () => {
+        setIsLoading(true);
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/habits`, {
+            const isArchived = activeTab === 'archived';
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/habits?archived=${isArchived}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
@@ -51,6 +57,8 @@ const Dashboard = ({ user, logout }) => {
             }
         } catch (error) {
             console.error("Error fetching habits:", error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -59,7 +67,12 @@ const Dashboard = ({ user, logout }) => {
         setIsArchiveModalOpen(true);
     };
 
-    const confirmArchive = async () => {
+    const openDeleteModal = (habitId) => {
+        setSelectedHabitId(habitId);
+        setIsDeleteModalOpen(true);
+    };
+
+    const handleArchiveToggle = async () => {
         if (!selectedHabitId) return;
 
         const token = localStorage.getItem('token');
@@ -70,10 +83,31 @@ const Dashboard = ({ user, logout }) => {
             });
 
             if (response.ok) {
-                toast.success("Habit archived");
+                toast.success(activeTab === 'active' ? "Habit archived" : "Habit unarchived");
                 fetchHabits();
             } else {
-                toast.error("Failed to archive");
+                toast.error("Failed to update habit");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const handleDelete = async () => {
+        if (!selectedHabitId) return;
+
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/habits/${selectedHabitId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (response.ok) {
+                toast.success("Habit deleted permanently");
+                fetchHabits();
+            } else {
+                toast.error("Failed to delete habit");
             }
         } catch (error) {
             console.error(error);
@@ -171,17 +205,51 @@ const Dashboard = ({ user, logout }) => {
                         <p className="text-gray-400 mt-1">Consistency is the key to success.</p>
                     </div>
                     
-                    <button
-                        onClick={() => setIsCreateModalOpen(true)}
-                        className="flex items-center gap-2 bg-white text-black px-5 py-2.5 rounded-full font-bold hover:bg-gray-200 hover:scale-105 transition-all shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)]"
-                    >
-                        <Plus size={20} /> New Habit
-                    </button>
+                    <div className="flex items-center gap-4">
+                        {/* Tab Switcher */}
+                        <div className="bg-gray-900 p-1 rounded-full flex items-center border border-white/10">
+                            <button
+                                onClick={() => setActiveTab('active')}
+                                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${activeTab === 'active' ? 'bg-white text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
+                            >
+                                Active
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('archived')}
+                                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${activeTab === 'archived' ? 'bg-white text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
+                            >
+                                Archived
+                            </button>
+                        </div>
+
+                        <button
+                            onClick={() => setIsCreateModalOpen(true)}
+                            className="flex items-center gap-2 bg-white text-black px-5 py-2.5 rounded-full font-bold hover:bg-gray-200 hover:scale-105 transition-all shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)]"
+                        >
+                            <Plus size={20} /> New Habit
+                        </button>
+                    </div>
                 </div>
 
                 {/* Habits Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {habits.filter(h => !h.isArchived).map((habit) => {
+                    {isLoading ? (
+                        // Loading Skeletons
+                        [...Array(6)].map((_, i) => (
+                            <div key={i} className="bg-[#0a0a0a] border border-gray-800 p-6 rounded-3xl">
+                                <div className="flex justify-between items-start mb-6">
+                                    <div className="w-full">
+                                        <Skeleton className="h-8 w-3/4 mb-3" />
+                                        <div className="flex gap-2">
+                                            <Skeleton className="h-6 w-16 rounded-full" />
+                                            <Skeleton className="h-6 w-20 rounded-full" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <Skeleton className="h-12 w-full rounded-2xl" />
+                            </div>
+                        ))
+                    ) : habits.map((habit) => {
                         const isDone = habit.completedToday;
                         return (
                             <div key={habit._id} className={`group bg-[#0a0a0a] border p-6 rounded-3xl transition-all duration-300 relative hover:-translate-y-1 hover:shadow-2xl ${isDone ? 'border-green-500/30 bg-green-900/5 shadow-green-900/10' : 'border-gray-800 hover:border-gray-700'}`}>
@@ -207,13 +275,34 @@ const Dashboard = ({ user, logout }) => {
                                         </div>
                                     </div>
                                     
-                                    <button
-                                        onClick={() => openArchiveModal(habit._id)}
-                                        className="text-gray-600 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-white/5 opacity-0 group-hover:opacity-100 absolute top-4 right-4"
-                                        title="Archive"
-                                    >
-                                        <Trash2 size={18} />
-                                    </button>
+                                    <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        {activeTab === 'active' ? (
+                                            <button
+                                                onClick={() => openArchiveModal(habit._id)}
+                                                className="text-gray-600 hover:text-yellow-400 transition-colors p-2 rounded-lg hover:bg-white/5"
+                                                title="Archive"
+                                            >
+                                                <Archive size={18} />
+                                            </button>
+                                        ) : (
+                                            <>
+                                                <button
+                                                    onClick={() => openArchiveModal(habit._id)}
+                                                    className="text-gray-600 hover:text-green-400 transition-colors p-2 rounded-lg hover:bg-white/5"
+                                                    title="Unarchive"
+                                                >
+                                                    <RotateCcw size={18} />
+                                                </button>
+                                                <button
+                                                    onClick={() => openDeleteModal(habit._id)}
+                                                    className="text-gray-600 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-white/5"
+                                                    title="Delete Permanently"
+                                                >
+                                                    <Trash2 size={18} />
+                                                </button>
+                                            </>
+                                        )}
+                                    </div>
                                 </div>
                                 
                                 <button
@@ -227,13 +316,17 @@ const Dashboard = ({ user, logout }) => {
                     })}
                 </div>
                 
-                {habits.filter(h => !h.isArchived).length === 0 && (
+                {!isLoading && habits.length === 0 && (
                     <div className="text-center py-24 border border-dashed border-gray-800 rounded-3xl bg-gray-900/20">
                         <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-500">
-                            <Plus size={32} />
+                            {activeTab === 'active' ? <Plus size={32} /> : <Archive size={32} />}
                         </div>
-                        <p className="text-gray-400 text-lg font-medium">No active habits found.</p>
-                        <p className="text-gray-600 text-sm mt-2">Create one to start your journey!</p>
+                        <p className="text-gray-400 text-lg font-medium">
+                            {activeTab === 'active' ? "No active habits found." : "No archived habits found."}
+                        </p>
+                        {activeTab === 'active' && (
+                            <p className="text-gray-600 text-sm mt-2">Create one to start your journey!</p>
+                        )}
                     </div>
                 )}
             </main>
@@ -274,9 +367,24 @@ const Dashboard = ({ user, logout }) => {
             <ConfirmModal
                 isOpen={isArchiveModalOpen}
                 onClose={() => setIsArchiveModalOpen(false)}
-                onConfirm={confirmArchive}
-                title="Archive Habit?"
-                message="This will hide the habit from your dashboard. Your history will remain saved."
+                onConfirm={handleArchiveToggle}
+                title={activeTab === 'active' ? "Archive Habit?" : "Unarchive Habit?"}
+                message={activeTab === 'active' 
+                    ? "This will hide the habit from your active list. Your history will remain saved." 
+                    : "This will move the habit back to your active list."}
+                confirmText={activeTab === 'active' ? "Archive" : "Unarchive"}
+                confirmColor={activeTab === 'active' ? "bg-yellow-600 hover:bg-yellow-500" : "bg-green-600 hover:bg-green-500"}
+            />
+
+            {/* Delete Confirmation Modal */}
+            <ConfirmModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                onConfirm={handleDelete}
+                title="Delete Habit Permanently?"
+                message="This action cannot be undone. All history and streaks for this habit will be lost."
+                confirmText="Delete"
+                confirmColor="bg-red-600 hover:bg-red-500"
             />
         </div>
     );

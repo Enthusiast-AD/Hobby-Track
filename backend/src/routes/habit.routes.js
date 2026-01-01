@@ -1,5 +1,5 @@
 import Router from 'express';
-import { createHabit, getHabits, toggleArchiveHabit } from '../controllers/habit.controllers.js';
+import { createHabit, getHabits, toggleArchiveHabit, deleteHabit } from '../controllers/habit.controllers.js';
 import { verifyJWT } from '../middlewares/auth.middllewares.js'; 
 
 
@@ -12,5 +12,6 @@ router.route('/')
     .get(getHabits);
 
 router.route('/:habitId/archive').patch(toggleArchiveHabit);
+router.route('/:habitId').delete(deleteHabit);
 
 export default router;

@@ -113,7 +113,7 @@ const getActivitiesByDate = asyncHandler(async (req, res) => {
     const activities = await ActivityLog.find({
         userId,
         date: { $gte: start, $lte: end }
-    }).populate("habitId", "title type");
+    }).populate("habitId", "title type isArchived");
 
     return res.status(200).json(new ApiResponse(200, activities, "Activities retrieved successfully"));
 });
@@ -130,9 +130,7 @@ const createActivityLog = asyncHandler(async (req, res) => {
         throw new ApiError(404, "Habit not found");
     }
 
-    if (habit.isArchived) {
-        throw new ApiError(400, "Cannot log activity for an archived habit");
-    }
+    // Removed check for archived habit to allow logging in archive mode
 
 
     const todayStart = new Date();

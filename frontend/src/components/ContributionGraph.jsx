@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import { generateYearlyData } from "../utils/dateHelpers.js";
-import { Flame, Trophy, Calendar, CheckCircle2 } from 'lucide-react';
+import { Flame, Trophy, Calendar, CheckCircle2, Archive } from 'lucide-react';
 
-const ContributionGraph = ({userId, refreshKey}) => {
+const ContributionGraph = ({userId, refreshKey, isPublic = false}) => {
     const [data, setData] = useState([]);
     const [streaks, setStreaks] = useState({ current: 0, max: 0 });
     const [selectedDate, setSelectedDate] = useState(null);
@@ -125,13 +125,15 @@ const ContributionGraph = ({userId, refreshKey}) => {
                 </div>
                 
                 {/* Motivational Message */}
-                <div className="w-full md:w-auto md:flex-1 flex items-center justify-center md:justify-end mt-2 md:mt-0">
-                    <div className="bg-green-500/10 border border-green-500/20 px-4 py-2 rounded-full backdrop-blur-sm text-center w-full md:w-auto">
-                        <p className="text-sm font-medium text-green-400">
-                            {getMotivationalMessage(streaks.current)}
-                        </p>
+                {!isPublic && (
+                    <div className="w-full md:w-auto md:flex-1 flex items-center justify-center md:justify-end mt-2 md:mt-0">
+                        <div className="bg-green-500/10 border border-green-500/20 px-4 py-2 rounded-full backdrop-blur-sm text-center w-full md:w-auto">
+                            <p className="text-sm font-medium text-green-400">
+                                {getMotivationalMessage(streaks.current)}
+                            </p>
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
 
             {/* Graph */}
@@ -199,15 +201,34 @@ const ContributionGraph = ({userId, refreshKey}) => {
                         <div className="text-gray-500 text-sm italic">Loading...</div>
                     ) : selectedActivities.length > 0 ? (
                         <div className="space-y-2">
-                            {selectedActivities.map((activity, idx) => (
+                            {/* Active Activities */}
+                            {selectedActivities.filter(a => !isPublic || !a.habitId?.isArchived).map((activity, idx) => (
                                 <div key={idx} className="flex items-center gap-3 text-sm text-gray-200 bg-black/40 p-2 rounded-lg border border-gray-800/50">
                                     <CheckCircle2 size={16} className="text-green-500" />
-                                    <span>{activity.habitId?.title || "Unknown Habit"}</span>
+                                    <span className="flex items-center gap-2">
+                                        {activity.habitId?.title || "Unknown Habit"}
+                                        {activity.habitId?.isArchived && (
+                                            <span className="text-[10px] text-gray-500 border border-gray-700 px-1.5 py-0.5 rounded bg-gray-900">Archived</span>
+                                        )}
+                                    </span>
                                     <span className="text-xs text-gray-600 ml-auto">
                                         {new Date(activity.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                                     </span>
                                 </div>
                             ))}
+
+                            {/* Archived Summary (Public Only) */}
+                            {isPublic && selectedActivities.filter(a => a.habitId?.isArchived).length > 0 && (
+                                <div className="flex items-center gap-3 text-sm text-gray-500 bg-black/20 p-2 rounded-lg border border-gray-800/30 italic">
+                                    <div className="w-5 h-5 rounded-full bg-gray-800 flex items-center justify-center text-gray-400">
+                                        <Archive size={12} />
+                                    </div>
+                                    <span>
+                                        {selectedActivities.filter(a => a.habitId?.isArchived).length} archived activity
+                                        {selectedActivities.filter(a => a.habitId?.isArchived).length > 1 ? 's' : ''}
+                                    </span>
+                                </div>
+                            )}
                         </div>
                     ) : (
                         <p className="text-gray-500 text-sm">No activity recorded for this day.</p>

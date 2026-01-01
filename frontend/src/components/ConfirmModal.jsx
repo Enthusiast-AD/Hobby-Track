@@ -1,4 +1,4 @@
-const ConfirmModal = ({ isOpen, onClose, onConfirm, title, message }) => {
+const ConfirmModal = ({ isOpen, onClose, onConfirm, title, message, confirmText = "Confirm", confirmColor = "bg-red-600 hover:bg-red-500" }) => {
     if (!isOpen) return null;
 
     return (
@@ -22,9 +22,9 @@ const ConfirmModal = ({ isOpen, onClose, onConfirm, title, message }) => {
                             onConfirm();
                             onClose();
                         }}
-                        className="bg-red-600 hover:bg-red-500 text-white font-bold py-2 px-6 rounded-lg transition-all"
+                        className={`${confirmColor} text-white font-bold py-2 px-6 rounded-lg transition-all`}
                     >
-                        Archive
+                        {confirmText}
                     </button>
                 </div>
             </div>

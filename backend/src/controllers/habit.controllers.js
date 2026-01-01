@@ -24,7 +24,11 @@ const createHabit = asyncHandler(async (req, res) => {
 
 const getHabits = asyncHandler(async (req, res) => {
     const userId = req.user._id;
-    const habits = await Habit.find({userId, isArchived: false}).sort({createdAt: -1});
+    const { archived } = req.query;
+    
+    const isArchived = archived === 'true';
+    
+    const habits = await Habit.find({userId, isArchived}).sort({createdAt: -1});
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -77,4 +81,24 @@ const toggleArchiveHabit = asyncHandler(async(req,res) => {
     return res.status(200).json(new ApiResponse(200,habit, habit.isArchived ? 'Habit archived successfully' : 'Habit unarchived successfully'));
 })
 
-export {createHabit, getHabits, toggleArchiveHabit};
+const deleteHabit = asyncHandler(async (req, res) => {
+    const { habitId } = req.params;
+    const userId = req.user._id;
+
+    const habit = await Habit.findOneAndDelete({ _id: habitId, userId });
+
+    if (!habit) {
+        throw new ApiError(404, 'Habit not found');
+    }
+
+    // Optional: Delete associated activity logs? 
+    // Usually better to keep logs for history, but if the user deletes the habit, they might expect logs to go.
+    // However, for a contribution graph, we might want to keep them. 
+    // Given the user's request "archiving... not shown... delete them", delete implies permanent removal.
+    // Let's delete the logs too to be clean.
+    await ActivityLog.deleteMany({ habitId });
+
+    return res.status(200).json(new ApiResponse(200, {}, 'Habit deleted successfully'));
+});
+
+export {createHabit, getHabits, toggleArchiveHabit, deleteHabit};

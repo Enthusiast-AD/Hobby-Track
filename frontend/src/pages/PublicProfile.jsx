@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { BarChart2 } from 'lucide-react';
 import ContributionGraph from '../components/ContributionGraph';
+import Skeleton from '../components/Skeleton';
 
 const PublicProfile = () => {
     const { username } = useParams();
@@ -23,7 +24,27 @@ const PublicProfile = () => {
         fetchPublicUser();
     }, [username]);
 
-    if (loading) return <div className="min-h-screen bg-black text-white flex items-center justify-center">Loading profile...</div>;
+    if (loading) return (
+        <div className="min-h-screen bg-black text-white font-sans">
+             <nav className="sticky top-0 z-50 border-b border-gray-800 bg-black/80 backdrop-blur-md">
+                <div className="max-w-5xl mx-auto px-4 h-16 flex justify-between items-center">
+                    <Skeleton className="h-8 w-32" />
+                    <Skeleton className="h-10 w-24 rounded-full" />
+                </div>
+            </nav>
+            <main className="max-w-4xl mx-auto px-4 py-12">
+                <div className="flex flex-col md:flex-row items-center gap-8 mb-12">
+                    <Skeleton className="w-32 h-32 rounded-full" />
+                    <div className="text-center md:text-left w-full max-w-md">
+                        <Skeleton className="h-10 w-3/4 mb-4" />
+                        <Skeleton className="h-6 w-1/2" />
+                    </div>
+                </div>
+                <Skeleton className="h-96 w-full rounded-2xl" />
+            </main>
+        </div>
+    );
+
     if (!profileUser) return <div className="min-h-screen bg-black text-white flex items-center justify-center flex-col gap-4">
         <p className="text-red-400 text-xl">User not found.</p>
         <Link to="/" className="text-green-500 hover:underline">Go Home</Link>
@@ -59,7 +80,7 @@ const PublicProfile = () => {
                     <h2 className="text-2xl font-bold mb-6 text-white flex items-center gap-2">
                         <span className="text-green-500"><BarChart2 size={24} /></span> Consistency Graph
                     </h2>
-                    <ContributionGraph userId={profileUser._id} />
+                    <ContributionGraph userId={profileUser._id} isPublic={true} />
                 </div>
             </main>
         </div>
