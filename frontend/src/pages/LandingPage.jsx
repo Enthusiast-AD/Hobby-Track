@@ -225,7 +225,7 @@ const LandingPage = () => {
 
       {/* Footer */}
       <footer className="py-12 border-t border-white/10 text-center text-gray-600 text-sm bg-black">
-        <p>© {new Date().getFullYear()} HobbyTrack. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} Commit. All rights reserved.</p>
       </footer>
     </div>
   );
