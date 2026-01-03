@@ -257,9 +257,9 @@ const Dashboard = ({ user, logout }) => {
 
                         <button
                             onClick={() => setIsCreateModalOpen(true)}
-                            className="flex items-center gap-2 bg-white text-black px-5 py-2.5 rounded-full font-bold hover:bg-gray-200 hover:scale-105 transition-all shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)]"
+                            className="flex items-center gap-2 bg-white text-black p-3 sm:px-5 sm:py-2.5 rounded-full font-bold hover:bg-gray-200 hover:scale-105 transition-all shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)]"
                         >
-                            <Plus size={20} /> New Habit
+                            <Plus size={20} /> <span className="hidden sm:inline">New Habit</span>
                         </button>
                     </div>
                 </div>
@@ -309,7 +309,7 @@ const Dashboard = ({ user, logout }) => {
                                         </div>
                                     </div>
                                     
-                                    <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <div className="absolute top-4 right-4 flex gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
                                         {activeTab === 'active' ? (
                                             <button
                                                 onClick={() => openArchiveModal(habit._id)}
