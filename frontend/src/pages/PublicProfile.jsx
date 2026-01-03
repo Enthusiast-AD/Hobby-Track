@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { BarChart2 } from 'lucide-react';
+import { Activity } from 'lucide-react';
 import ContributionGraph from '../components/ContributionGraph';
 import Skeleton from '../components/Skeleton';
 
@@ -68,7 +68,7 @@ const PublicProfile = () => {
                     <img 
                         src={profileUser.avatar} 
                         alt="Profile" 
-                        className="w-32 h-32 rounded-full border-4 border-green-500 shadow-2xl shadow-green-900/20" 
+                        className="w-32 h-32 rounded-full border-4 border-gray-800 shadow-2xl shadow-green-900/20" 
                     />
                     <div className="text-center md:text-left">
                         <h1 className="text-4xl font-bold text-white mb-2">{profileUser.fullName}</h1>
@@ -76,9 +76,14 @@ const PublicProfile = () => {
                     </div>
                 </div>
 
-                <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8 shadow-xl">
-                    <h2 className="text-2xl font-bold mb-6 text-white flex items-center gap-2">
-                        <span className="text-green-500"><BarChart2 size={24} /></span> Consistency Graph
+                <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl md:rounded-3xl p-4 md:p-8 shadow-2xl relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-green-500/5 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+                    
+                    <h2 className="text-xl md:text-2xl font-bold mb-6 md:mb-8 text-white flex items-center gap-3">
+                        <div className="p-2 bg-green-500/10 rounded-lg border border-green-500/20">
+                            <Activity size={20} className="text-green-500 md:w-6 md:h-6" />
+                        </div>
+                        Consistency Graph
                     </h2>
                     <ContributionGraph userId={profileUser._id} isPublic={true} />
                 </div>
