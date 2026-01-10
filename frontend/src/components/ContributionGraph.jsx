@@ -138,7 +138,7 @@ const ContributionGraph = ({userId, refreshKey, isPublic = false}) => {
 
             {/* Graph */}
             <div className="relative group">
-                <div ref={scrollRef} className="overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
+                <div ref={scrollRef} className="overflow-x-auto pb-2 no-scrollbar">
                     <div className="min-w-max">
                         {renderMonthLabels()}
                         <div className="grid grid-rows-7 grid-flow-col gap-1.5 w-max">
