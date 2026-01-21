@@ -99,7 +99,7 @@ const LandingPage = () => {
       </section>
 
       {/* Features Grid */}
-      <section className="py-32 bg-black relative overflow-hidden border-t border-white/10">
+      <section className="py-32 bg-black relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
             
             <div className="text-center max-w-3xl mx-auto mb-20">
@@ -113,109 +113,150 @@ const LandingPage = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Large Card 1: Contribution Graph */}
-                <div className="md:col-span-2 bg-neutral-900/50 border border-white/10 rounded-3xl p-8 md:p-12 relative overflow-hidden group hover:border-green-500/30 transition-all duration-500 hover:bg-neutral-900/80 hover:shadow-2xl hover:shadow-green-900/20">
-                    <div className="absolute top-0 right-0 w-96 h-96 bg-green-500/10 rounded-full blur-3xl -mr-32 -mt-32 transition-opacity opacity-30 group-hover:opacity-60"></div>
+                <div className="md:col-span-2 bg-[#0A0A0A] border border-white/5 rounded-[32px] p-8 md:p-12 relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-green-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     
-                    <div className="flex flex-col md:flex-row items-start justify-between gap-8 relative z-10">
-                        <div className="max-w-md">
-                            <div className="w-14 h-14 bg-green-500/10 rounded-2xl flex items-center justify-center mb-8 text-green-400 border border-green-500/20 shadow-[0_0_15px_rgba(74,222,128,0.1)]">
-                                <BarChart2 size={28} />
+                    <div className="relative z-10 flex flex-col h-full justify-between">
+                        <div className="max-w-md space-y-4">
+                            <div className="w-12 h-12 bg-green-500/10 rounded-full flex items-center justify-center text-green-400 border border-green-500/20">
+                                <BarChart2 size={24} />
                             </div>
-                            <h3 className="text-3xl font-bold text-white mb-4">GitHub-style Contribution Graph</h3>
+                            <h3 className="text-2xl md:text-3xl font-bold text-white">GitHub-style Contribution Graph</h3>
                             <p className="text-gray-400 text-lg leading-relaxed">
                                 Visualize your consistency with our signature heat map. Every green square is a victory.
                             </p>
                         </div>
                         
                         {/* 3D Graph Visual */}
-                        <div className="flex-1 w-full flex items-center justify-center perspective-[1000px]">
-                            <div className="grid grid-cols-7 gap-2 transform rotate-6 skew-y-3 group-hover:rotate-3 group-hover:skew-y-1 transition-all duration-700 ease-out opacity-80 group-hover:opacity-100">
-                                {[...Array(28)].map((_, i) => (
-                                    <div key={i} className={`w-6 h-6 rounded-md ${Math.random() > 0.3 ? 'bg-green-500' : 'bg-green-900/30'} ${Math.random() > 0.7 ? 'opacity-100' : 'opacity-40'} shadow-lg border border-white/5`}></div>
-                                ))}
+                        <div className="mt-12 flex items-center justify-center perspective-[1000px] h-48 w-full">
+                            <div className="grid grid-cols-12 gap-1.5 transform rotate-x-12 rotate-y-12 rotate-z-6 scale-110 group-hover:rotate-x-0 group-hover:rotate-y-0 group-hover:rotate-z-0 transition-all duration-700 ease-out">
+                                {[...Array(48)].map((_, i) => {
+                                    const opacity = Math.random();
+                                    return (
+                                        <div 
+                                            key={i} 
+                                            className={`
+                                                w-8 h-8 rounded-sm
+                                                ${opacity > 0.7 ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.4)]' : 
+                                                  opacity > 0.4 ? 'bg-green-800/40' : 
+                                                  'bg-zinc-900 border border-white/5'}
+                                                transition-all duration-500 hover:scale-110
+                                            `}
+                                        ></div>
+                                    )
+                                })}
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Tall Card 2: Public Profile */}
-                <div className="bg-neutral-900/50 border border-white/10 rounded-3xl p-8 relative overflow-hidden group hover:border-indigo-500/30 transition-all duration-500 hover:bg-neutral-900/80 hover:shadow-2xl hover:shadow-indigo-900/20">
-                    <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-indigo-500/10 to-transparent opacity-30 group-hover:opacity-60 transition-opacity"></div>
+                {/* Tall Card 2: Advanced Analytics / Profile */}
+                <div className="bg-[#0A0A0A] border border-white/5 rounded-[32px] p-8 relative overflow-hidden group flex flex-col">
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-green-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     
-                    <div className="relative z-10 h-full flex flex-col">
-                        <div className="w-14 h-14 bg-indigo-500/10 rounded-2xl flex items-center justify-center mb-8 text-indigo-400 border border-indigo-500/20 shadow-[0_0_15px_rgba(129,140,248,0.1)]">
-                            <Globe size={28} />
+                    <div className="relative z-10 mb-8 space-y-4">
+                         <div className="w-12 h-12 bg-zinc-800 rounded-full flex items-center justify-center text-white border border-white/10">
+                            <Globe size={24} />
                         </div>
-                        <h3 className="text-2xl font-bold text-white mb-4">Public Profile</h3>
-                        <p className="text-gray-400 leading-relaxed mb-8">
-                            Share your journey. Your profile showcases your streaks and dedication to the world.
+                        <h3 className="text-2xl font-bold text-white">Public Profile</h3>
+                        <p className="text-gray-400 leading-relaxed">
+                            Share your journey. Your profile showcases your streaks and dedication.
                         </p>
-                        
-                        {/* 3D Profile Card Visual */}
-                        <div className="mt-auto perspective-[1000px]">
-                            <div className="bg-black/60 border border-white/10 p-4 rounded-xl transform rotate-x-12 group-hover:rotate-x-0 transition-all duration-500 shadow-2xl backdrop-blur-sm">
-                                <div className="flex items-center gap-3 mb-3">
-                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500"></div>
+                    </div>
+
+                     {/* Visual */}
+                    <div className="relative flex-1 min-h-[200px] flex items-end justify-center perspective-[1000px]">
+                        <div className="w-48 bg-zinc-900 border border-white/10 rounded-xl p-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 shadow-2xl">
+                             <div className="flex items-center gap-3 mb-4">
+                                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-green-400 to-green-600"></div>
+                                <div className="space-y-1">
                                     <div className="h-2 w-20 bg-white/20 rounded-full"></div>
+                                    <div className="h-2 w-12 bg-white/10 rounded-full"></div>
                                 </div>
-                                <div className="space-y-2">
-                                    <div className="h-2 w-full bg-white/10 rounded-full"></div>
-                                    <div className="h-2 w-2/3 bg-white/10 rounded-full"></div>
-                                </div>
-                            </div>
+                             </div>
+                             <div className="flex items-end justify-between gap-1 h-20">
+                                {[40, 70, 45, 90, 60].map((h, i) => (
+                                    <div key={i} style={{ height: `${h}%` }} className="w-6 bg-green-500/20 rounded-t-sm relative group-hover:bg-green-500/40 transition-colors">
+                                        <div className="absolute top-0 w-full h-1 bg-green-500"></div>
+                                    </div>
+                                ))}
+                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Card 3: Flexible Goals */}
-                <div className="bg-neutral-900/50 border border-white/10 rounded-3xl p-8 relative overflow-hidden group hover:border-rose-500/30 transition-all duration-500 hover:bg-neutral-900/80 hover:shadow-2xl hover:shadow-rose-900/20">
-                     <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-2xl -mr-10 -mt-10 transition-opacity opacity-30 group-hover:opacity-60"></div>
-                    <div className="relative z-10">
-                        <div className="w-14 h-14 bg-rose-500/10 rounded-2xl flex items-center justify-center mb-8 text-rose-400 border border-rose-500/20 shadow-[0_0_15px_rgba(251,113,133,0.1)]">
-                            <Target size={28} />
-                        </div>
-                        <h3 className="text-2xl font-bold text-white mb-4">Flexible Goals</h3>
-                        <p className="text-gray-400 leading-relaxed mb-6">
-                            Track daily habits or one-off tasks. "Read 30 mins" or "Run a Marathon", we've got you.
+                {/* Card 3: Marketplace Synergy style / Flexible Goals */}
+                <div className="bg-[#0A0A0A] border border-white/5 rounded-[32px] p-8 relative overflow-hidden group flex flex-col justify-between">
+                    <div className="absolute -left-10 -bottom-10 w-40 h-40 bg-green-500/10 rounded-full blur-3xl group-hover:bg-green-500/20 transition-colors"></div>
+                    
+                    <div className="relative z-10 space-y-4">
+                        {/* <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 text-orange-400 text-xs font-semibold border border-orange-500/20 mb-2">
+                           Feature
+                        </div> */}
+                        <h3 className="text-2xl font-bold text-white">Flexible Goals</h3>
+                        <p className="text-gray-400 leading-relaxed">
+                            Track daily habits or one-off tasks. "Read 30 mins" or "Run a Marathon".
                         </p>
-                        
-                         {/* 3D Target Visual */}
-                         <div className="flex justify-center perspective-[1000px]">
-                            <div className="relative w-24 h-24 transform group-hover:rotate-y-12 transition-transform duration-500">
-                                <div className="absolute inset-0 border-4 border-rose-500/20 rounded-full"></div>
-                                <div className="absolute inset-4 border-4 border-rose-500/40 rounded-full"></div>
-                                <div className="absolute inset-8 bg-rose-500/60 rounded-full shadow-[0_0_20px_rgba(244,63,94,0.4)]"></div>
+                    </div>
+
+                    <div className="mt-8 relative h-40 flex items-center justify-center">
+                        <div className="relative w-32 h-32">
+                            {/* Orbiting Elements */}
+                            <div className="absolute inset-0 border border-white/10 rounded-full animate-[spin_8s_linear_infinite]"></div>
+                            <div className="absolute inset-4 border border-white/5 rounded-full animate-[spin_12s_linear_infinite_reverse]"></div>
+                            
+                            {/* Center Target */}
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl rotate-45 flex items-center justify-center shadow-[0_0_30px_rgba(249,115,22,0.3)] group-hover:scale-110 transition-transform duration-500">
+                                    <Target className="text-white -rotate-45" size={32} />
+                                </div>
                             </div>
-                         </div>
+
+                             {/* Floating particles */}
+                            <div className="absolute -top-4 right-0 w-3 h-3 bg-orange-500 rounded-full blur-[1px]"></div>
+                        </div>
                     </div>
                 </div>
 
-                {/* Card 4: Gamified Streaks */}
-                <div className="md:col-span-2 bg-neutral-900/50 border border-white/10 rounded-3xl p-8 relative overflow-hidden group hover:border-amber-500/30 transition-all duration-500 hover:bg-neutral-900/80 hover:shadow-2xl hover:shadow-amber-900/20 flex flex-col md:flex-row items-center gap-8">
-                    <div className="flex-1 relative z-10">
-                        <div className="w-14 h-14 bg-amber-500/10 rounded-2xl flex items-center justify-center mb-8 text-amber-400 border border-amber-500/20 shadow-[0_0_15px_rgba(251,191,36,0.1)]">
-                            <Sparkles size={28} />
+                {/* Card 4: Integrated Management Tools style / Gamified Streaks */}
+                <div className="md:col-span-2 bg-[#0A0A0A] border border-white/5 rounded-[32px] p-8 md:p-12 relative overflow-hidden group flex flex-col md:flex-row items-center gap-12">
+                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,rgba(34,197,94,0.05),transparent_50%)]"></div>
+
+                    <div className="flex-1 relative z-10 space-y-6">
+                        <div className="w-12 h-12 bg-green-500/10 rounded-full flex items-center justify-center text-green-400 border border-green-500/20">
+                            <Sparkles size={24} />
                         </div>
-                        <h3 className="text-3xl font-bold text-white mb-4">Gamified Streaks</h3>
-                        <p className="text-gray-400 text-lg leading-relaxed">
-                            Earn streaks for consecutive days. Watch your fire grow and challenge yourself to beat your personal best.
-                        </p>
+                        <div>
+                            <h3 className="text-3xl font-bold text-white mb-3">Gamified Streaks</h3>
+                            <p className="text-gray-400 text-lg leading-relaxed">
+                                Earn streaks for consecutive days. Watch your fire grow and challenge yourself to beat your personal best.
+                            </p>
+                        </div>
+                         <div className="flex gap-4">
+                            <div className="flex flex-col">
+                                <span className="text-3xl font-bold text-white">12</span>
+                                <span className="text-sm text-gray-500">Current</span>
+                            </div>
+                            <div className="w-px h-10 bg-white/10"></div>
+                            <div className="flex flex-col">
+                                <span className="text-3xl font-bold text-green-400">45</span>
+                                <span className="text-sm text-gray-500">Best</span>
+                            </div>
+                        </div>
                     </div>
-                    {/* Decorative Element */}
-                    <div className="flex-1 flex justify-center items-center perspective-[1000px]">
-                         <div className="relative transform-style-3d group-hover:rotate-y-6 transition-transform duration-700">
-                            <div className="bg-black/60 p-5 rounded-2xl border border-white/10 backdrop-blur-md transform -rotate-6 translate-z-20 shadow-2xl group-hover:-translate-y-4 transition-transform duration-500">
-                                <div className="text-amber-500 font-bold text-2xl mb-1 flex items-center gap-2">
-                                    <span className="text-3xl">🔥</span> 12 Days
-                                </div>
-                                <div className="text-xs text-gray-500 font-mono uppercase tracking-wider">Current Streak</div>
-                            </div>
-                            <div className="absolute top-12 left-12 bg-black/60 p-5 rounded-2xl border border-white/10 backdrop-blur-md transform rotate-6 translate-z-0 shadow-xl opacity-80 group-hover:opacity-100 group-hover:translate-x-4 transition-all duration-500">
-                                <div className="text-yellow-500 font-bold text-2xl mb-1 flex items-center gap-2">
-                                    <span className="text-3xl">🏆</span> 45 Days
-                                </div>
-                                <div className="text-xs text-gray-500 font-mono uppercase tracking-wider">Best Streak</div>
-                            </div>
+                    
+                    {/* Visual */}
+                    <div className="flex-1 flex justify-center scale-125">
+                         <div className="relative group-hover:scale-105 transition-transform duration-500">
+                            <div className="absolute inset-0 bg-orange-500/20 blur-3xl rounded-full"></div>
+                             <svg viewBox="0 0 24 24" fill="none" className="w-48 h-48 text-orange-500 drop-shadow-[0_0_15px_rgba(249,115,22,0.5)]">
+                                <path
+                                d="M14.9918 2.60742C15.011 2.36531 15.3409 2.29656 15.466 2.50198C18.667 6.30902 21.054 11.2368 18.062 16.5826C16.8906 18.6756 14.6738 20.9026 12.0163 20.9995C9.28189 21.0991 6.96574 18.2327 5.76088 16.2736C4.46077 14.1593 4.29699 9.87081 7.20337 6.13846C7.32236 5.98565 7.56149 6.02701 7.62061 6.21142C8.20459 8.03262 9.7042 10.9576 11.2372 10.9984C11.5365 11.0064 11.6961 10.6483 11.4883 10.4354C10.0381 8.94939 9.80931 6.58611 10.2241 4.54271C10.2792 4.27137 10.6397 4.19537 10.8033 4.42111C11.8384 5.84883 13.0453 7.82098 12.9696 9.87569C12.963 10.0538 13.1873 10.1382 13.2981 10.0028C14.0729 9.0559 14.9209 5.8959 14.9918 2.60742Z"
+                                fill="currentColor"
+                                stroke="currentColor"
+                                strokeWidth="0"
+                                />
+                            </svg>
                          </div>
                     </div>
                 </div>
