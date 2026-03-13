@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { toast } from 'react-hot-toast';
 import { Link } from 'react-router-dom';
-import { LogOut, User, Plus, Check, Trash2, X, Flame, Trophy, Archive, RotateCcw } from 'lucide-react';
+import { LogOut, User, Plus, Check, Trash2, X, Flame, Trophy, Archive, RotateCcw, Play } from 'lucide-react';
 import HabitForm from '../components/HabitForm';
 import ConfirmModal from '../components/ConfirmModal';
+import ReflectionModal from '../components/ReflectionModal';
 import Skeleton from '../components/Skeleton';
 
 const Dashboard = ({ user, logout }) => {
@@ -21,22 +22,15 @@ const Dashboard = ({ user, logout }) => {
     const [isArchiveModalOpen, setIsArchiveModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [selectedHabitId, setSelectedHabitId] = useState(null);
+
+    // Reflection Modal State
+    const [isReflectionModalOpen, setIsReflectionModalOpen] = useState(false);
+    const [pendingHabitId, setPendingHabitId] = useState(null);
+    const [pendingHabitTitle, setPendingHabitTitle] = useState('');
     
     // Profile Dropdown State
     const [showProfile, setShowProfile] = useState(false);
     const profileRef = useRef(null);
-
-    useEffect(() => {
-        fetchHabits();
-        
-        const handleClickOutside = (event) => {
-            if (profileRef.current && !profileRef.current.contains(event.target)) {
-                setShowProfile(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, [activeTab]); // Refetch when tab changes
 
     const fetchHabits = async () => {
         setIsLoading(true);
@@ -62,6 +56,18 @@ const Dashboard = ({ user, logout }) => {
             setIsLoading(false);
         }
     };
+
+    useEffect(() => {
+        fetchHabits();
+        
+        const handleClickOutside = (event) => {
+            if (profileRef.current && !profileRef.current.contains(event.target)) {
+                setShowProfile(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [activeTab, refreshKey]); // Refetch when tab changes or refresh requested
 
     const openArchiveModal = (habitId) => {
         setSelectedHabitId(habitId);
@@ -135,13 +141,20 @@ const Dashboard = ({ user, logout }) => {
         }
     };
 
-    const handleMarkDone = async (habitId) => {
+    const handleMarkDone = (habitId) => {
         const habit = habits.find(h => h._id === habitId);
         if (habit && habit.completedToday) {
             toast.success("Already done today! Great job! 🎉");
             return;
         }
 
+        // Open Reflection Modal
+        setPendingHabitId(habitId);
+        setPendingHabitTitle(habit ? habit.title : 'this habit');
+        setIsReflectionModalOpen(true);
+    };
+
+    const handleReflectionSubmit = async ({ mood, note }) => {
         const token = localStorage.getItem('token');
         if (!token) {
             toast.error("Please login first");
@@ -155,17 +168,22 @@ const Dashboard = ({ user, logout }) => {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ userId: user._id, habitId })
+                body: JSON.stringify({ 
+                    userId: user._id, 
+                    habitId: pendingHabitId,
+                    mood,
+                    note
+                })
             });
 
             const data = await response.json();
 
             if (response.ok) {
-                toast.success("Done! 🔥");
+                toast.success("Done! Logged with " + mood);
                 
                 // Optimistic update
                 setHabits(prev => prev.map(h => {
-                    if (h._id === habitId) {
+                    if (h._id === pendingHabitId) {
                         return {
                             ...h,
                             completedToday: true,
@@ -176,6 +194,7 @@ const Dashboard = ({ user, logout }) => {
                     return h;
                 }));
                 setRefreshKey(prev => prev + 1);
+                setIsReflectionModalOpen(false);
             } else {
                 toast.error(data.message || "Could not log activity");
             }
@@ -194,6 +213,13 @@ const Dashboard = ({ user, logout }) => {
                     <h1 className="text-xl font-bold bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">
                         Commit
                     </h1>
+
+                    <Link to="/focus" className="ml-8 text-sm font-medium text-gray-400 hover:text-white transition flex items-center gap-2">
+                         <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                         Focus Mode
+                    </Link>
+                    
+                    <div className="flex-1"></div>
                     
                     <div className="relative" ref={profileRef}>
                         <button 
@@ -309,7 +335,17 @@ const Dashboard = ({ user, logout }) => {
                                         </div>
                                     </div>
                                     
-                                    <div className="absolute top-4 right-4 flex gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
+                                    <div className="absolute top-4 right-4 flex gap-1 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
+                                        {activeTab === 'active' && !isDone && (
+                                            <Link 
+                                                to="/focus" 
+                                                state={{ habitId: habit._id }}
+                                                className="text-gray-600 hover:text-blue-400 transition-colors p-2 rounded-lg hover:bg-white/5"
+                                                title="Start Focus Session"
+                                            >
+                                                <Play size={18} />
+                                            </Link>
+                                        )}
                                         {activeTab === 'active' ? (
                                             <button
                                                 onClick={() => openArchiveModal(habit._id)}
@@ -423,6 +459,14 @@ const Dashboard = ({ user, logout }) => {
                 message="This action cannot be undone. All history and streaks for this habit will be lost."
                 confirmText="Delete"
                 confirmColor="bg-red-600 hover:bg-red-500"
+            />
+
+            {/* Reflection Modal */}
+            <ReflectionModal
+                isOpen={isReflectionModalOpen}
+                onClose={() => setIsReflectionModalOpen(false)}
+                onSave={handleReflectionSubmit}
+                habitTitle={pendingHabitTitle}
             />
         </div>
     );

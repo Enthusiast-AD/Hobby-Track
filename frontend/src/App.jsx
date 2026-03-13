@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Toaster, toast } from 'react-hot-toast'; 
 import Dashboard from './pages/Dashboard';
 import LandingPage from './pages/LandingPage';
+import FocusMode from './pages/FocusMode';
 import LoginPage from './pages/LoginPage';
 import PublicProfile from './pages/PublicProfile';
 import Profile from './pages/Profile';
@@ -96,6 +97,13 @@ function App() {
              } />
 
              <Route path="/u/:username" element={<PublicProfile />} />
+             <Route path="/focus" element={
+                 user && user.username ? (
+                    <FocusMode />
+                 ) : (
+                    user ? <Navigate to="/onboarding" /> : <Navigate to="/login" />
+                 )
+             } />
           </Routes>
        </BrowserRouter>
     </div>
