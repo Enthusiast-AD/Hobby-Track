@@ -26,6 +26,8 @@
 ## 🚀 Features
 
 - **🔥 Streak Tracking**: Visualize your consistency with dynamic flame indicators and streak counters.
+- **🧘 Focus Mode**: Integrated timer with calming soundscapes (Rain, Forest, White Noise) for deep work sessions.
+- **📝 Reflection & Journaling**: Log your mood and notes upon completing habits to track qualitative progress.
 - **📊 Dashboard**: A clean, grid-based interface to manage your daily habits and one-time tasks.
 - **🔒 Privacy & Public Profiles**: Share your progress with a public profile link (`/u/username`) while keeping sensitive habits private.
 - **📂 Archive System**: Declutter your dashboard by archiving old habits without losing your history.
