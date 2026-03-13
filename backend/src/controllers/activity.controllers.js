@@ -119,7 +119,7 @@ const getActivitiesByDate = asyncHandler(async (req, res) => {
 });
 
 const createActivityLog = asyncHandler(async (req, res) => {
-    const { userId, habitId } = req.body;
+    const { userId, habitId, duration, note, mood } = req.body;
     
     if(!isValidObjectId(userId) || !isValidObjectId(habitId)) {
         throw new ApiError(400, "Invalid user ID or habit ID");
@@ -147,6 +147,18 @@ const createActivityLog = asyncHandler(async (req, res) => {
         });
 
         if (existingLog) {
+            // If duration is provided (e.g. from timer), allow updating existing log
+            if (duration) {
+                existingLog.duration = (existingLog.duration || 0) + Number(duration);
+                if (note) {
+                    existingLog.note = existingLog.note ? existingLog.note + '\n' + note : note;
+                }
+                if (mood) {
+                    existingLog.mood = mood; // Update mood if provided
+                }
+                await existingLog.save();
+                return res.status(200).json(new ApiResponse(200, existingLog, "Activity log updated successfully"));
+            }
             throw new ApiError(400, "You have already completed this daily habit today!");
         }
     } else if (habit.type === 'todo') {
@@ -164,7 +176,10 @@ const createActivityLog = asyncHandler(async (req, res) => {
         userId,
         habitId,
         date: new Date(),
-        count: 1
+        count: 1,
+        duration: duration ? Number(duration) : 0,
+        note: note || '',
+        mood: mood || ''
     });
 
     // Update Streak Logic
