@@ -7,7 +7,7 @@ import ConfirmModal from '../components/ConfirmModal';
 import ReflectionModal from '../components/ReflectionModal';
 import Skeleton from '../components/Skeleton';
 
-const Dashboard = ({ user, logout }) => {
+const Dashboard = ({ user, onLogout }) => {
     const [habits, setHabits] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('active'); // 'active' | 'archived'
@@ -42,7 +42,7 @@ const Dashboard = ({ user, logout }) => {
             });
 
             if (response.status === 401) {
-                logout();
+                onLogout();
                 return;
             }
 
@@ -244,7 +244,7 @@ const Dashboard = ({ user, logout }) => {
                                     <User size={16} /> My Profile
                                 </Link>
                                 <button 
-                                    onClick={logout} 
+                                    onClick={onLogout} 
                                     className="w-full text-left px-3 py-2 rounded-lg hover:bg-red-900/10 text-sm text-red-400 hover:text-red-300 transition-colors flex items-center gap-2"
                                 >
                                     <LogOut size={16} /> Logout

@@ -5,10 +5,13 @@ import Dashboard from './pages/Dashboard';
 import LandingPage from './pages/LandingPage';
 import FocusMode from './pages/FocusMode';
 import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
 import PublicProfile from './pages/PublicProfile';
 import Profile from './pages/Profile';
 import Onboarding from './pages/Onboarding'; 
 import { jwtDecode } from "jwt-decode"; 
+
+import AboutPage from './pages/AboutPage';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -50,13 +53,16 @@ function App() {
   if (loading) return <div className="bg-black min-h-screen text-white flex items-center justify-center">Loading...</div>;
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen">
        <Toaster position="bottom-center" />
        
        <BrowserRouter>
           <Routes>
+             <Route path="/about" element={<AboutPage />} />
              <Route path="/" element={<LandingPage />} />
              
+             <Route path="/signup" element={user ? <Navigate to="/dashboard" /> : <SignupPage />} />
+
              <Route path="/login" element={
                  !user ? (
                     <LoginPage onLoginSuccess={(data) => {
@@ -79,31 +85,15 @@ function App() {
                     <Navigate to={user ? "/dashboard" : "/login"} />
                  )
              } />
-
+             
              <Route path="/dashboard" element={
-                 user && user.username ? (
-                    <Dashboard user={user} logout={handleLogout} />
-                 ) : (
-                    user ? <Navigate to="/onboarding" /> : <Navigate to="/login" />
-                 )
+                user && user.username ? <Dashboard user={user} onLogout={handleLogout} /> : <Navigate to="/login" />
              } />
 
-             <Route path="/profile" element={
-                 user && user.username ? (
-                    <Profile user={user} />
-                 ) : (
-                    <Navigate to="/login" />
-                 )
-             } />
-
+             <Route path="/focus" element={user ? <FocusMode /> : <Navigate to="/login" />} />
+             
              <Route path="/u/:username" element={<PublicProfile />} />
-             <Route path="/focus" element={
-                 user && user.username ? (
-                    <FocusMode />
-                 ) : (
-                    user ? <Navigate to="/onboarding" /> : <Navigate to="/login" />
-                 )
-             } />
+             <Route path="/profile" element={user ? <Profile user={user} /> : <Navigate to="/login" />} />
           </Routes>
        </BrowserRouter>
     </div>
