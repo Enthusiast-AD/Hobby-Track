@@ -24,6 +24,50 @@
   animation: fadeIn 0.2s ease-out forwards;
 }
 
+@keyframes pulseSlow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+.animate-pulse-slow {
+  animation: pulseSlow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Simulated tailwindcss-animate utilities */
+.animate-in {
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+  opacity: 0;
+}
+
+.fade-in {
+  opacity: 0;
+  animation-name: fadeIn;
+}
+
+.slide-in-from-top-2 {
+  opacity: 0;
+  transform: translateY(-0.5rem);
+  animation-name: slideInTop2;
+}
+
+.slide-in-from-top-4 {
+  opacity: 0;
+  transform: translateY(-1rem);
+  animation-name: slideInTop4;
+}
+
+@keyframes slideInTop2 {
+  from { opacity: 0; transform: translateY(-0.5rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInTop4 {
+  from { opacity: 0; transform: translateY(-1rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
     display: none;
