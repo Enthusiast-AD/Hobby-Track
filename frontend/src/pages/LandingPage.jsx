@@ -89,8 +89,8 @@ const LandingPage = () => {
                 <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 lg:gap-20 items-center w-full">
                     <div className="space-y-8 z-10 animate-fade-in-up">
                         <h1 className="text-5xl md:text-7xl font-bold leading-[1.05] tracking-tight">
-                            The infrastructure of <br />
-                            <span className="text-[#002a20]/80">personal growth</span>
+                            The Infrastructure of <br />
+                            <span className="text-[#002a20]/80">Personal Growth</span>
                         </h1>
                         <p className="text-xl text-[#002a20]/70 max-w-lg leading-relaxed font-light">
                             Engineering new ways of connecting your daily actions with your long-term goals. Push changes to your real life.
