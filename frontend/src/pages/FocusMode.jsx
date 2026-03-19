@@ -200,43 +200,43 @@ const FocusMode = () => {
     };
 
     return (
-        <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4 relative overflow-hidden font-sans">
+        <div className="min-h-screen bg-[#fff8e1] text-[#002a20] flex flex-col items-center justify-center p-4 relative overflow-hidden font-sans">
             {/* Background Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-900 z-0" />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#fff8e1] via-[#f0fdf4] to-[#fff8e1] z-0" />
             
             {/* Content */}
             <div className="z-10 w-full max-w-md flex flex-col items-center space-y-8">
                 
                 {/* Header */}
                 <div className="w-full flex justify-between items-center px-4">
-                    <button onClick={() => navigate('/dashboard')} className="text-gray-400 hover:text-white transition p-2 hover:bg-white/10 rounded-full">
+                    <button onClick={() => navigate('/dashboard')} className="text-[#002a20]/40 hover:text-[#002a20] transition p-2 hover:bg-[#002a20]/5 rounded-full">
                         <ArrowLeft size={24} />
                     </button>
-                    <h1 className="text-lg font-bold tracking-widest text-gray-400 uppercase">Focus Mode</h1>
+                    <h1 className="text-lg font-bold tracking-widest text-[#002a20]/40 uppercase">Focus Mode</h1>
                     <div className="w-10"></div> {/* Spacer */}
                 </div>
 
                 {/* Habit Selector & Sound */}
                 <div className="w-full space-y-4 px-4">
-                    <div className="bg-gray-900/50 backdrop-blur-md border border-white/10 rounded-2xl p-2 relative">
-                        <label className="absolute -top-2 left-4 px-2 bg-black text-[10px] text-gray-500 font-bold uppercase tracking-wider">
+                    <div className="bg-white/80 backdrop-blur-md border border-[#002a20]/10 rounded-2xl p-2 relative shadow-sm">
+                        <label className="absolute -top-2 left-4 px-2 bg-[#fff8e1] text-[10px] text-[#002a20]/60 font-bold uppercase tracking-wider">
                             Focus Target
                         </label>
                         <select 
                             value={selectedHabitId}
                             onChange={(e) => setSelectedHabitId(e.target.value)}
-                            className="w-full bg-transparent text-white p-2 focus:outline-none text-center font-medium appearance-none cursor-pointer hover:text-green-400 transition"
+                            className="w-full bg-transparent text-[#002a20] p-2 focus:outline-none text-center font-medium appearance-none cursor-pointer hover:text-green-700 transition"
                             disabled={isActive}
                         >
                             <option value="" disabled>Select a habit...</option>
                             {habits.map(habit => (
-                                <option key={habit._id} value={habit._id} className="bg-gray-900">
+                                <option key={habit._id} value={habit._id} className="bg-white text-[#002a20]">
                                     {habit.title}
                                 </option>
                             ))}
                         </select>
                         {/* Custom Dropdown Arrow */}
-                        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
+                        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[#002a20]/40">
                              <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                             </svg>
@@ -244,32 +244,32 @@ const FocusMode = () => {
                     </div>
 
                     {/* Sound Selector */}
-                    <div className={`flex items-center justify-between bg-gray-900/30 border border-white/5 rounded-xl p-3 transition-all ${isSoundOn ? 'border-blue-500/30 bg-blue-900/10' : ''}`}>
+                    <div className={`flex items-center justify-between bg-white/60 border border-[#002a20]/5 rounded-xl p-3 transition-all ${isSoundOn ? 'border-blue-500/30 bg-blue-50' : ''}`}>
              
                         <div className="flex items-center gap-3 w-full">
                              <button 
                                 onClick={() => setIsSoundOn(!isSoundOn)}
-                                className={`p-2 rounded-full transition shrink-0 ${isSoundOn ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/20' : 'bg-gray-800 text-gray-400 hover:text-white'}`}
+                                className={`p-2 rounded-full transition shrink-0 ${isSoundOn ? 'bg-[#002a20] text-white shadow-lg shadow-[#002a20]/20' : 'bg-[#002a20]/5 text-[#002a20]/40 hover:text-[#002a20]'}`}
                             >
                                 {isSoundOn ? <Volume2 size={18} /> : <VolumeX size={18} />}
                             </button>
                             
                             <div className="flex flex-col w-full relative group">
-                                <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-0.5 group-hover:text-blue-400 transition-colors">
+                                <span className="text-[10px] text-[#002a20]/40 font-bold uppercase tracking-wider mb-0.5 group-hover:text-blue-600 transition-colors">
                                     Soundscape
                                 </span>
                                 <select 
                                     value={selectedSound} 
                                     onChange={(e) => setSelectedSound(e.target.value)}
-                                    className="bg-transparent text-sm font-medium focus:outline-none cursor-pointer appearance-none w-full text-gray-300 hover:text-white transition"
+                                    className="bg-transparent text-sm font-medium focus:outline-none cursor-pointer appearance-none w-full text-[#002a20]/80 hover:text-[#002a20] transition"
                                 >
                                     {Object.keys(SOUNDS).map(sound => (
-                                        <option key={sound} value={sound} className="bg-gray-900">{sound}</option>
+                                        <option key={sound} value={sound} className="bg-white">{sound}</option>
                                     ))}
                                 </select>
                             </div>
                         </div>
-                        <div className="text-gray-600 pl-2 border-l border-white/5">
+                        <div className="text-[#002a20]/40 pl-2 border-l border-[#002a20]/10">
                              <Music size={16} />
                         </div>
                     </div>
@@ -280,21 +280,21 @@ const FocusMode = () => {
                     {/* Time Controls */}
                     {!isActive && (
                         <div className="absolute -left-12 top-1/2 -translate-y-1/2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <button onClick={() => adjustTime(5)} className="p-2 bg-gray-800 hover:bg-gray-700 rounded-full text-green-400">
+                            <button onClick={() => adjustTime(5)} className="p-2 bg-[#002a20]/5 hover:bg-[#002a20]/10 rounded-full text-green-600">
                                 <Plus size={20} />
                             </button>
-                            <button onClick={() => adjustTime(-5)} className="p-2 bg-gray-800 hover:bg-gray-700 rounded-full text-red-400">
+                            <button onClick={() => adjustTime(-5)} className="p-2 bg-[#002a20]/5 hover:bg-[#002a20]/10 rounded-full text-red-600">
                                 <Minus size={20} />
                             </button>
                         </div>
                     )}
                     
-                    <div className="text-[7rem] font-mono leading-none font-bold text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-500 select-none tracking-tighter">
+                    <div className="text-[7rem] font-mono leading-none font-bold text-[#002a20] select-none tracking-tighter">
                         {formatTime(timeLeft)}
                     </div>
                     
                     {!isActive && (
-                         <div className="text-center text-gray-500 text-sm font-medium mt-2">
+                         <div className="text-center text-[#002a20]/40 text-sm font-medium mt-2">
                             {initialTime / 60} Minutes
                          </div>
                     )}
@@ -304,7 +304,7 @@ const FocusMode = () => {
                 <div className="flex items-center space-x-8">
                     <button 
                         onClick={resetTimer}
-                        className="p-4 rounded-full bg-gray-800/50 text-gray-400 hover:text-white hover:bg-gray-800 transition backdrop-blur-sm"
+                        className="p-4 rounded-full bg-[#002a20]/5 text-[#002a20]/40 hover:text-[#002a20] hover:bg-[#002a20]/10 transition backdrop-blur-sm"
                         title="Reset Timer"
                     >
                         <RotateCcw size={24} />
@@ -312,16 +312,16 @@ const FocusMode = () => {
 
                     <button 
                         onClick={toggleTimer}
-                        className={`p-8 rounded-[2rem] transition-all transform hover:scale-105 hover:shadow-2xl ${isActive ? 'bg-amber-500 hover:bg-amber-600 shadow-amber-900/20' : 'bg-white hover:bg-gray-200 shadow-white/10'} text-black`}
+                        className={`p-8 rounded-[2rem] transition-all transform hover:scale-105 hover:shadow-xl ${isActive ? 'bg-[#c5a065] hover:bg-[#b8955e] shadow-[#c5a065]/20 text-white' : 'bg-[#002a20] hover:bg-[#002a20]/90 shadow-[#002a20]/20 text-white'}`}
                     >
                         {isActive ? <Pause size={40} fill="currentColor" /> : <Play size={40} fill="currentColor" className="ml-1" />}
                     </button>
                 </div>
 
                 {/* Status Text of Focus Mode */}
-                <p className="text-gray-500 text-sm mt-8 text-center max-w-xs h-6">
+                <p className="text-[#002a20]/40 text-sm mt-8 text-center max-w-xs h-6">
                     {isActive 
-                        ? <span className="animate-pulse text-green-400">Time to focus...</span> 
+                        ? <span className="animate-pulse text-[#002a20]">Time to focus...</span> 
                         : "Ready when you are."}
                 </p>
             </div>
