@@ -49,17 +49,17 @@ const SignupPage = () => {
     };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-[#fff8e1] text-[#002a20] overflow-hidden">
+    <div className="min-h-screen flex flex-col md:flex-row bg-[#fff8e1] text-[#002a20] md:overflow-hidden">
       
       {/* Left Side - Form */}
-      <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-8 md:p-12 relative z-10 bg-white">
-        <Link to="/" className="absolute top-8 left-8 text-[#002a20]/60 hover:text-[#002a20] transition-colors flex items-center gap-2 text-sm font-medium">
+      <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-6 md:p-12 relative z-10 bg-white">
+        <Link to="/" className="absolute top-6 left-6 md:top-8 md:left-8 text-[#002a20]/60 hover:text-[#002a20] transition-colors flex items-center gap-2 text-sm font-medium">
             <ArrowLeft size={16} /> Back to Home
         </Link>
         
-        <div className="max-w-md w-full space-y-8">
+        <div className="max-w-md w-full space-y-8 mt-12 md:mt-0">
           <div className="text-center md:text-left space-y-2">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-[#002a20]">
+            <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-[#002a20]">
               Create account
             </h1>
             <p className="text-[#002a20]/60">
@@ -78,7 +78,7 @@ const SignupPage = () => {
                         value={formData.name}
                         onChange={handleChange}
                         placeholder="Enter your name"
-                        className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#002a20]/20 focus:border-[#002a20] transition-all font-medium placeholder:text-gray-400"
+                        className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#002a20]/20 focus:border-[#002a20] transition-all font-medium placeholder:text-gray-400 text-base"
                     />
                 </div>
             </div>
@@ -93,7 +93,7 @@ const SignupPage = () => {
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="Enter email to get started"
-                        className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#002a20]/20 focus:border-[#002a20] transition-all font-medium placeholder:text-gray-400"
+                        className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#002a20]/20 focus:border-[#002a20] transition-all font-medium placeholder:text-gray-400 text-base"
                     />
                 </div>
             </div>
@@ -108,7 +108,7 @@ const SignupPage = () => {
                         value={formData.password}
                         onChange={handleChange}
                         placeholder="Create a password"
-                        className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#002a20]/20 focus:border-[#002a20] transition-all font-medium placeholder:text-gray-400"
+                        className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#002a20]/20 focus:border-[#002a20] transition-all font-medium placeholder:text-gray-400 text-base"
                     />
                 </div>
             </div>
